@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shutter clone</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />    
+    <style>
+        /* Base */
+body {
+  line-height: 1.7;
+  color: gray;
+  font-weight: 400;
+  font-size: 1rem;
+  background: #000; }
+
+::selection {
+  background: #000;
+  color: #fff; }
+
+a {
+  -webkit-transition: .3s all ease;
+  -o-transition: .3s all ease;
+  transition: .3s all ease; }
+  a:hover {
+    text-decoration: none; }
+
+h1, h2, h3,
+.h1, .h2, .h3 {
+  font-family: "Quicksand", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"; }
+
+.offcanvas-menu .site-wrap {
+  position: absolute;
+  overflow: hidden; }
+
+.site-wrap:before {
+  -webkit-transition: .3s all ease-in-out;
+  -o-transition: .3s all ease-in-out;
+  transition: .3s all ease-in-out;
+  background: rgba(0, 0, 0, 0.6);
+  content: "";
+  position: absolute;
+  z-index: 2000;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0;
+  visibility: hidden; }
+
+.offcanvas-menu .site-wrap {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  z-index: 2;
+  overflow: hidden; }
+  .offcanvas-menu .site-wrap:before {
+    opacity: 1;
+    visibility: visible; }
+
+.btn {
+  border-radius: 30px; }
+  .btn:hover, .btn:active, .btn:focus {
+    outline: none;
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important; }
+  .btn.btn-md {
+    padding: 15px 30px;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: .1em; }
+
+.form-control {
+  border: none;
+  border-bottom: 2px solid gray;
+  border-radius: 0;
+  background: none;
+  color: #fff;
+  padding-left: 0;
+  padding-right: 0; }
+  .form-control:active, .form-control:focus {
+    color: #fff;
+    background: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    outline: none;
+    border-color: #fff; }
+
+/* Navbar */
+
+.site-mobile-menu {
+  width: 300px;
+  position: fixed;
+  right: 0;
+  z-index: 2000;
+  padding-top: 20px;
+  background: #fff;
+  height: calc(100vh);
+  -webkit-transform: translateX(110%);
+  -ms-transform: translateX(110%);
+  transform: translateX(110%);
+  -webkit-box-shadow: -10px 0 20px -10px rgba(0, 0, 0, 0.1);
+  box-shadow: -10px 0 20px -10px rgba(0, 0, 0, 0.1);
+  -webkit-transition: .3s all ease-in-out;
+  -o-transition: .3s all ease-in-out;
+  transition: .3s all ease-in-out; }
+  .offcanvas-menu .site-mobile-menu {
+    -webkit-transform: translateX(0%);
+    -ms-transform: translateX(0%);
+    transform: translateX(0%); }
+  .site-mobile-menu .site-mobile-menu-header {
+    width: 100%;
+    float: left;
+    padding-left: 20px;
+    padding-right: 20px; }
+    .site-mobile-menu .site-mobile-menu-header .site-mobile-menu-close {
+      float: right;
+      margin-top: 8px; }
+      .site-mobile-menu .site-mobile-menu-header .site-mobile-menu-close span {
+        font-size: 30px;
+        display: inline-block;
+        padding-left: 10px;
+        padding-right: 0px;
+        line-height: 1;
+        cursor: pointer;
+        -webkit-transition: .3s all ease;
+        -o-transition: .3s all ease;
+        transition: .3s all ease; }
+        .site-mobile-menu .site-mobile-menu-header .site-mobile-menu-close span:hover {
+          color: #25262a; }
+  .site-mobile-menu .site-mobile-menu-body {
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+    position: relative;
+    padding: 0 20px 20px 20px;
+    height: calc(100vh - 52px);
+    padding-bottom: 150px; }
+  .site-mobile-menu .site-nav-wrap {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    position: relative; }
+    .site-mobile-menu .site-nav-wrap a {
+      padding: 10px 20px;
+      display: block;
+      position: relative;
+      color: #212529; }
+      .site-mobile-menu .site-nav-wrap a:hover {
+        color: #ef6c57; }
+    .site-mobile-menu .site-nav-wrap li {
+      position: relative;
+      display: block; }
+      .site-mobile-menu .site-nav-wrap li.active > a {
+        color: #ef6c57; }
+    .site-mobile-menu .site-nav-wrap .arrow-collapse {
+      position: absolute;
+      right: 0px;
+      top: 10px;
+      z-index: 20;
+      width: 36px;
+      height: 36px;
+      text-align: center;
+      cursor: pointer;
+      border-radius: 50%; }
+      .site-mobile-menu .site-nav-wrap .arrow-collapse:hover {
+        background: #f8f9fa; }
+      .site-mobile-menu .site-nav-wrap .arrow-collapse:before {
+        font-size: 12px;
+        z-index: 20;
+        font-family: "icomoon";
+        content: "\f078";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        -webkit-transform: translate(-50%, -50%) rotate(-180deg);
+        -ms-transform: translate(-50%, -50%) rotate(-180deg);
+        transform: translate(-50%, -50%) rotate(-180deg);
+        -webkit-transition: .3s all ease;
+        -o-transition: .3s all ease;
+        transition: .3s all ease; }
+      .site-mobile-menu .site-nav-wrap .arrow-collapse.collapsed:before {
+        -webkit-transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%); }
+    .site-mobile-menu .site-nav-wrap > li {
+      display: block;
+      position: relative;
+      float: left;
+      width: 100%; }
+      .site-mobile-menu .site-nav-wrap > li > a {
+        padding-left: 20px;
+        font-size: 20px; }
+      .site-mobile-menu .site-nav-wrap > li > ul {
+        padding: 0;
+        margin: 0;
+        list-style: none; }
+        .site-mobile-menu .site-nav-wrap > li > ul > li {
+          display: block; }
+          .site-mobile-menu .site-nav-wrap > li > ul > li > a {
+            padding-left: 40px;
+            font-size: 16px; }
+          .site-mobile-menu .site-nav-wrap > li > ul > li > ul {
+            padding: 0;
+            margin: 0; }
+            .site-mobile-menu .site-nav-wrap > li > ul > li > ul > li {
+              display: block; }
+              .site-mobile-menu .site-nav-wrap > li > ul > li > ul > li > a {
+                font-size: 16px;
+                padding-left: 60px; }
+
+/* Blocks */
+.header-bar {
+  float: right;
+  width: 250px;
+  height: 100vh;
+  min-height: 400px;
+  overflow: auto;
+  background: #000;
+  padding: 30px;
+  text-align: right;
+  position: fixed;
+  right: 0;
+  top: 0; }
+  @media (max-width: 991.98px) {
+    .header-bar {
+      width: 100%;
+      position: relative;
+      float: none;
+      height: 70px !important;
+      min-height: 70px; } }
+  .header-bar .site-logo {
+    margin-bottom: 30px; }
+    @media (max-width: 991.98px) {
+      .header-bar .site-logo {
+        margin-right: auto;
+        margin-bottom: 0; } }
+    .header-bar .site-logo a {
+      font-size: 20px;
+      color: #fff;
+      text-transform: uppercase;
+      font-weight: bold; }
+  .header-bar .main-menu {
+    margin-left: auto; }
+    @media (max-width: 991.98px) {
+      .header-bar .main-menu {
+        display: none; } }
+  .header-bar ul {
+    text-align: right;
+    padding: 0;
+    margin: 0 0 30px 0; }
+    @media (max-width: 991.98px) {
+      .header-bar ul {
+        display: inline-block;
+        margin-bottom: 0; } }
+    .header-bar ul li {
+      list-style: none;
+      margin-bottom: 5px; }
+      @media (max-width: 991.98px) {
+        .header-bar ul li {
+          display: inline-block; } }
+      .header-bar ul li a {
+        display: block;
+        padding: 4px 0;
+        color: #fff;
+        text-transform: uppercase;
+        font-size: .8rem; }
+        @media (max-width: 991.98px) {
+          .header-bar ul li a {
+            padding: 4px 10px; } }
+      .header-bar ul li.active a {
+        color: #ef6c57; }
+    .header-bar ul.social li {
+      display: inline-block; }
+      .header-bar ul.social li a {
+        padding: 10px; }
+      .header-bar ul.social li:last-child a {
+        padding-right: 0; }
+
+.main-content {
+  float: left;
+  width: calc(100% - 250px); }
+  @media (max-width: 991.98px) {
+    .main-content {
+      width: 100%;
+      position: relative;
+      float: none; } }
+  .main-content .container-fluid {
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 0;
+    padding-right: 0; }
+    @media (max-width: 991.98px) {
+      .main-content .container-fluid {
+        padding-left: 15px;
+        padding-right: 15px; } }
+  .main-content .photos .photo-item {
+    position: relative; }
+    .main-content .photos .photo-item:after {
+      position: absolute;
+      content: "";
+      left: 0;
+      right: 0;
+      bottom: 0;
+      top: 0;
+      background: rgba(0, 0, 0, 0.6);
+      z-index: 1;
+      -webkit-transition: .3s all ease;
+      -o-transition: .3s all ease;
+      transition: .3s all ease;
+      opacity: 0;
+      visibility: hidden; }
+    .main-content .photos .photo-item .photo-text-more {
+      position: absolute;
+      z-index: 3;
+      top: 50%;
+      left: 50%;
+      width: 100%;
+      -webkit-transform: translate(-50%, -50%);
+      -ms-transform: translate(-50%, -50%);
+      transform: translate(-50%, -50%);
+      margin-top: 30px;
+      -webkit-transition: .3s all ease;
+      -o-transition: .3s all ease;
+      transition: .3s all ease;
+      opacity: 0;
+      visibility: hidden;
+      text-align: center; }
+      .main-content .photos .photo-item .photo-text-more .icon {
+        color: #fff;
+        font-size: 20px; }
+      .main-content .photos .photo-item .photo-text-more .heading {
+        font-size: 16px;
+        color: #fff;
+        margin-bottom: 0; }
+      .main-content .photos .photo-item .photo-text-more .meta {
+        color: #cccccc;
+        text-transform: uppercase;
+        font-size: 12px; }
+    .main-content .photos .photo-item img {
+      width: 100%;
+      -o-object-fit: cover;
+      object-fit: cover;
+      height: 300px;
+      margin-bottom: 20px; }
+      @media (max-width: 575.98px) {
+        .main-content .photos .photo-item img {
+          height: 200px; } }
+    .main-content .photos .photo-item:hover:after {
+      opacity: 1;
+      visibility: visible; }
+    .main-content .photos .photo-item:hover .photo-text-more {
+      margin-top: 0;
+      opacity: 1;
+      visibility: visible; }
+
+.site-mobile-menu .site-mobile-menu-body ul:first-child {
+  margin-bottom: 20px !important;
+  float: left; }
+
+.site-mobile-menu .site-mobile-menu-body .site-nav-wrap + .site-nav-wrap {
+  float: left;
+  display: block;
+  position: relative; }
+  .site-mobile-menu .site-mobile-menu-body .site-nav-wrap + .site-nav-wrap li, .site-mobile-menu .site-mobile-menu-body .site-nav-wrap + .site-nav-wrap li a {
+    float: none;
+    width: auto;
+    display: inline; }
+
+.blog-entry .img-wrap {
+  -webkit-box-flex: 0;
+  -ms-flex: 0 0 250px;
+  flex: 0 0 250px; }
+  .blog-entry .img-wrap img {
+    border: 4px solid #fff; }
+
+.blog-entry h2 {
+  font-size: 24px; }
+  .blog-entry h2 a {
+    color: #fff; }
+
+.blog-entry .meta {
+  color: #737373; }
+
+.custom-pagination {
+  margin-top: 50px;
+  margin-bottom: 50px; }
+  .custom-pagination span, .custom-pagination a {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center; }
+  .custom-pagination a {
+    border-radius: 50%; }
+    .custom-pagination a:hover {
+      background: #ef6c57;
+      color: #fff; }
+
+      .rrr{
+        height: 20%;
+        width: 20%;
+      }
+      
+
+    </style>
+</head>
+<body>
+
+
+
+
+  <div class="site-wrap">
+
+  <div class="site-mobile-menu">
+    <div class="site-mobile-menu-header">
+      <div class="site-mobile-menu-close mt-3">
+        <span class="icon-close2 js-menu-toggle"></span>
+      </div>
+    </div>
+    <div class="site-mobile-menu-body"><ul class="site-nav-wrap">
+        <li class="active"><a href="#">Home</a></li>
+        <li><a href="#">Photos</a></li>
+        <li><a href="#">Bio</a></li>
+        <li><a href="#">Blog</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul><ul class="site-nav-wrap">
+
+      </ul></div>
+  </div>
+
+  <header class="header-bar d-flex d-lg-block align-items-center aos-init aos-animate" data-aos="fade-left">
+    <div class="site-logo">
+      <a href="index.html">Shutter</a>
+    </div>
+    
+    <div class="d-inline-block d-xl-none ml-md-0 ml-auto py-3" style="position: relative; top: 3px;"><a href="#" class="site-menu-toggle js-menu-toggle text-white"><span class="icon-menu h3"></span></a></div>
+
+    <div class="main-menu">
+      <ul class="js-clone-nav">
+        <li class="active"><a href="index.html">Home</a></li>
+        <li><a href="#">Photos</a></li>
+        <li><a href="#">Bio</a></li>
+        <li><a href="#">Blog</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+      <ul class="social js-clone-nav">
+        <li><a href="#"><span class="icon-facebook"></span></a></li>
+        <li><a href="#"><span class="icon-twitter"></span></a></li>
+        <li><a href="#"><span class="icon-instagram"></span></a></li>
+      </ul>
+    </div>
+  </header> 
+
+
+
+
+
+
+
+
+
+
+
+
+  <main class="main-content">
+    <div class="container-fluid photos">
+      <div class="row align-items-stretch">
+        
+        <div class="col-6 col-md-6 col-lg-8 aos-init aos-animate" data-aos="fade-up">
+          <a href="index.html" class="d-block photo-item">
+            <img src="https://inayafaizan21.github.io/Shutter/img/img_4.jpg" alt="Image" class="img-fluid">
+            <div class="photo-text-more">
+              <div class="photo-text-more">
+              <h3 class="heading">Photos Title Here</h3>
+              <span class="meta">42 Photos</span>
+            </div>
+            </div>
+          </a>
+        </div>
+        <div class="col-6 col-md-6 col-lg-4 aos-init aos-animate" data-aos="fade-up" data-aos-delay="100">
+          <a href="index.html" class="d-block photo-item">
+            <img src="https://inayafaizan21.github.io/Shutter/img/img_5.jpg" alt="Image" class="img-fluid">
+            <div class="photo-text-more">
+              <div class="photo-text-more">
+              <h3 class="heading">Photos Title Here</h3>
+              <span class="meta">42 Photos</span>
+            </div>
+            </div>
+          </a>
+        </div>
+
+        <div class="col-6 col-md-6 col-lg-3 aos-init aos-animate" data-aos="fade-up">
+          <a href="index.html" class="d-block photo-item">
+            <img src="https://inayafaizan21.github.io/Shutter/img/img_1.jpg" alt="Image" class="img-fluid">
+            <div class="photo-text-more">
+              <h3 class="heading">Photos Title Here</h3>
+              <span class="meta">42 Photos</span>
+            </div>
+          </a>
+        </div>
+        <div class="col-6 col-md-6 col-lg-6 aos-init aos-animate" data-aos="fade-up" data-aos-delay="200">
+          <a href="index.html" class="d-block photo-item">
+            <img src="https://inayafaizan21.github.io/Shutter/img/img_2.jpg" alt="Image" class="img-fluid">
+            <div class="photo-text-more">
+              <div class="photo-text-more">
+              <h3 class="heading">Photos Title Here</h3>
+              <span class="meta">42 Photos</span>
+            </div>
+            </div>
+          </a>
+        </div>
+        <div class="col-6 col-md-6 col-lg-3 aos-init aos-animate" data-aos="fade-up" data-aos-delay="300">
+          <a href="index.html" class="d-block photo-item">
+            <img src="https://inayafaizan21.github.io/Shutter/img/img_3.jpg" alt="Image" class="img-fluid">
+            <div class="photo-text-more">
+              <div class="photo-text-more">
+              <h3 class="heading">Photos Title Here</h3>
+              <span class="meta">42 Photos</span>
+            </div>
+            </div>
+          </a>
+        </div>
+
+        
+
+        <div class="col-6 col-md-6 col-lg-6 aos-init aos-animate" data-aos="fade-up" data-aos-delay="">
+          <a href="index.html" class="d-block photo-item">
+            <img src="https://inayafaizan21.github.io/Shutter/img/img_6.jpg" alt="Image" class="img-fluid">
+            <div class="photo-text-more">
+              <div class="photo-text-more">
+              <h3 class="heading">Photos Title Here</h3>
+              <span class="meta">42 Photos</span>
+            </div>
+            </div>
+          </a>
+        </div>
+        <div class="col-6 col-md-6 col-lg-6 aos-init" data-aos="fade-up" data-aos-delay="100">
+          <a href="index.html" class="d-block photo-item">
+            <img src="https://inayafaizan21.github.io/Shutter/img/img_7.jpg" alt="Image" class="img-fluid">
+            <div class="photo-text-more">
+              <div class="photo-text-more">
+              <h3 class="heading">Photos Title Here</h3>
+              <span class="meta">42 Photos</span>
+            </div>
+            </div>
+          </a>
+        </div>
+
+
+        <div class="col-6 col-md-6 col-lg-4 aos-init" data-aos="fade-up" data-aos-delay="">
+          <a href="index.html" class="d-block photo-item">
+            <img src="https://inayafaizan21.github.io/Shutter/img/img_8.jpg" alt="Image" class="img-fluid">
+            <div class="photo-text-more">
+              <div class="photo-text-more">
+              <h3 class="heading">Photos Title Here</h3>
+              <span class="meta">42 Photos</span>
+            </div>
+            </div>
+          </a>
+        </div>
+        <div class="col-6 col-md-6 col-lg-4 aos-init" data-aos="fade-up" data-aos-delay="100">
+          <a href="index.html" class="d-block photo-item">
+            <img src="https://inayafaizan21.github.io/Shutter/img/img_9.jpg" alt="Image" class="img-fluid">
+            <div class="photo-text-more">
+              <div class="photo-text-more">
+              <h3 class="heading">Photos Title Here</h3>
+              <span class="meta">42 Photos</span>
+            </div>
+            </div>
+          </a>
+        </div>
+        <div class="col-6 col-md-6 col-lg-4 aos-init" data-aos="fade-up" data-aos-delay="200">
+          <a href="index.html" class="d-block photo-item">
+            <img src="https://inayafaizan21.github.io/Shutter/img/img_10.jpg" alt="Image" class="img-fluid">
+            <div class="photo-text-more">
+              <div class="photo-text-more">
+              <h3 class="heading">Photos Title Here</h3>
+              <span class="meta">42 Photos</span>
+            </div>
+            </div>
+          </a>
+        </div>
+
+
+
+        
+
+      </div>
+
+
+    </div>
+  </main>
+
+
+    </div>
+  </main>
+
+</div> <!-- .site-wrap -->
+
+  <script src="js/jquery-3.3.1.min.js"></script>
+  <script src="js/jquery-migrate-3.0.1.min.js"></script>
+  <script src="js/jquery-ui.js"></script>
+  <script src="js/popper.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/owl.carousel.min.js"></script>
+  <script src="js/jquery.stellar.min.js"></script>
+  <script src="js/jquery.countdown.min.js"></script>
+  <script src="js/jquery.magnific-popup.min.js"></script>
+  <script src="js/bootstrap-datepicker.min.js"></script>
+  <script src="js/aos.js"></script>
+
+  <script src="js/jquery.fancybox.min.js"></script>
+
+  <script src="js/main.js"></script>
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=UA-23581568-13"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-23581568-13');
+</script>
+    
+  <script defer="" src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon="{&quot;rayId&quot;:&quot;8c726978e9a33ccf&quot;,&quot;serverTiming&quot;:{&quot;name&quot;:{&quot;cfExtPri&quot;:true,&quot;cfL4&quot;:true}},&quot;version&quot;:&quot;2024.8.0&quot;,&quot;token&quot;:&quot;cd0b4b3a733644fc843ef0b185f98241&quot;}" crossorigin="anonymous"></script>
+
+  <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+  <script>
+    AOS.init();
+  </script>
+
+
+
+
+
+
+
+
+   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+<a href="index.html" ><img src="img/php.jpg" class="rrr" alt=""></a>
+
+
+<center>
+    <a href="index.html"><b>foodpanda clone</b></a>
+</center>
+</body>
+</html>
